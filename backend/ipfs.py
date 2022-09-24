@@ -16,10 +16,9 @@ def send_to_cloud(img):
     headers = {
       'Authorization':  f'Bearer {jwt} '
     }
-
     response = requests.request("POST", url, headers=headers, data=payload, files = files)
-
-    return response["IpfsHash"]
+    s =  response.json()
+    return s['IpfsHash']
 def auth_test():
     url = "https://api.pinata.cloud/data/testAuthentication"
     payload = {"hey ":"1"}
