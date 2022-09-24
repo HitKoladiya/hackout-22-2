@@ -19,48 +19,36 @@ const EncFrm = () => {
         console.log(data);
     };
 
-    const handleFile = async (e: any) => {
-        let file = await e.target.files[0];
-        setFile(file);
-        setFnm(file.name);
-
-        console.log("0");
-        
-
-        const options = {
-            method: "POST",
-            url: "http://127.0.0.1:5000/image/",
-            data: file,
-        };
-
-        console.log("1");
-
-        await axios
-            .request(options)
-            .then(function (response) {
-                console.log(response.data);
-                console.log("1");
-            })
-            .catch(function (error) {
-                console.error(error);
-                console.log("2");
-            });
-
-        console.log(file);
-        console.log("File Uploaded");
-    };
-
     const handleSubmit = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
         const finalData = {
             data: data.data,
             key: data.key,
-            file: file,
         };
         console.log(finalData);
-
+        
         alert(JSON.stringify(finalData));
     };
+
+    const handleFile = (e: any) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        console.log(formData);
+        
+        const Upload = async () => {
+            await fetch("http://127.0.0.1:5000/image", {
+                method: "POST",
+                body: formData,
+            }).then((resp) => {
+                resp.json().then((data) => {
+                    console.log(data);
+                });
+            });
+        };
+        console.log(formData);
+
+        Upload();
+    }
 
     //
 
@@ -73,7 +61,7 @@ const EncFrm = () => {
                         Encrypt Data
                     </h2>
                 </div>
-                <form className="mt-8 space-y-6">
+                <div className="mt-8 space-y-6">
                     <div className=" rounded-md shadow- bg-white shadow-gray-800 p-5">
                         <div>
                             <label
@@ -130,21 +118,27 @@ const EncFrm = () => {
                                             strokeLinejoin="round"
                                         />
                                     </svg>
-                                    <div className="flex text-sm text-gray-600">
-                                        <label
-                                            htmlFor="file-upload"
-                                            className="relative cursor-pointer rounded-md bg-white font-medium text-black focus-within:outline-none focus-within:ring-2 focus-within:ring-gray-700 focus-within:ring-offset-2 hover:text-gray-700"
-                                        >
-                                            <span>{fnm}</span>
-                                            <input
-                                                id="file-upload"
-                                                name="file-upload"
-                                                type="file"
-                                                onChange={handleFile}
-                                                className="sr-only"
-                                            />
-                                        </label>
-                                    </div>
+                                    <form onSubmit={handleFile} encType="multipart/form-data">
+                                        <div className="flex text-sm text-gray-600">
+                                            <label
+                                                htmlFor="file-upload"
+                                                className="relative cursor-pointer rounded-md bg-white font-medium text-black focus-within:outline-none focus-within:ring-2 focus-within:ring-gray-700 focus-within:ring-offset-2 hover:text-gray-700"
+                                            >
+                                                <span>{fnm}</span>
+                                                <input
+                                                    type="file"
+                                                    id="image"
+                                                    name="file"
+                                                    accept="image/*"
+                                                    className="file-custom"
+                                                    
+                                                />
+                                            </label>
+                                        </div>
+                                        <button type="submit">
+                                            upload
+                                        </button>
+                                    </form>
                                     <p className="text-xs text-gray-500">
                                         PNG & JPG
                                     </p>
@@ -162,7 +156,7 @@ const EncFrm = () => {
                             </button>
                         </div>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     );

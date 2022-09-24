@@ -15,6 +15,8 @@ const test = () => {
                 });
             });
         };
+        console.log(formData);
+
         Upload();
     };
     return (
