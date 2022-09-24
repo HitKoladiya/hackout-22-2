@@ -79,7 +79,7 @@ const EncFrm = () => {
 
         const options = {
             method: 'POST',
-            url: 'http://127.0.0.1:5000/image',
+            url: 'http://127.0.0.1:5000/image_encode',
             data: data,
         };
 
@@ -98,7 +98,7 @@ const EncFrm = () => {
             MySwal.close();
             MySwal.fire({
                 title: 'Error',
-                text: 'Error Uploading File',
+                text: error,
                 icon: 'error',
                 confirmButtonText: 'Ok'
             });
