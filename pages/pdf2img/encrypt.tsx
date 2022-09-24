@@ -4,16 +4,12 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 const EncFrm = () => {
-    const MySwal = withReactContent(Swal);
+    const [frmd, setFrmd] = useState({});
 
-    const [data, setData] = useState({
-        data: "",
-        image: "",
-    });
+    const [fnm, setFnm] = useState("Upload File");
+    const [fnmm, setFnmm] = useState("Upload File");
 
-    const [img, setImg] = useState("");
-
-    const sendFileToIPFS = async (e: any) => {
+    const sendFileToIPFS = async (img: any) => {
         console.log("file");
 
         if (img) {
@@ -32,13 +28,7 @@ const EncFrm = () => {
                     },
                 });
 
-                const ImgHash = await `ipfs://${resFile.data.IpfsHash}`;
-                await setData({ ...data, image: ImgHash });
-                console.log(ImgHash);
-                await setImg(ImgHash);
-                console.log("img");
-
-                console.log(data);
+                return await `ipfs://${resFile.data.IpfsHash}`;
 
                 //Take a look at your Pinata Pinned section, you will see a new file added to you list.
             } catch (error) {
@@ -48,84 +38,30 @@ const EncFrm = () => {
         }
     };
 
-    const [fnm, setFnm] = useState("Upload File");
-
-    const handleChange = (e: { target: { name: any; value: any } }) => {
-        setData({
-            ...data,
-            [e.target.name]: e.target.value,
-        });
-        sendFileToIPFS(img);
-        console.log(data);
-    };
-
     const handleFile = async (e: any) => {
-        let file = await e.target.files[0];
-        setFnm(file.name);
-        console.log(img);
-        await setImg(file);
-        console.log(data);
-        await sendFileToIPFS(file);
-        setData({ ...data, image: img });
+        const file = e.target.files[0];
+        const name = e.target.name;
+
+        setFrmd({ ...frmd, [name]: file });
+
+        if (name === "file-upload1") {
+            setFnm(file.name);
+        } else if (name === "file-upload2") {
+            setFnmm(file.name);
+        }
+
+        console.log(frmd);
     };
 
-    const handleAxios = async (data: any) => {
-        const options = {
-            method: "POST",
-            url: "http://127.0.0.1:5000/image_encode",
-            data: {
-                data: data.data,
-                image: img,
-            },
-        };
+    const handleSubmit = async (e: any) => {
+        e.preventDefault();
 
-        axios
-            .request(options)
-            .then(async (response) => {
-                console.log(response.data);
-                MySwal.close();
+        const v1 = sendFileToIPFS("file-upload1");
+        const v2 = sendFileToIPFS("file-upload2");
 
-                MySwal.fire({
-                    title: "Message encrypted and uploaded to IPFS",
-                    text: `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`,
-                    icon: "success",
-                    confirmButtonText: "Ok",
-                });
-                window.location.assign(`https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`);
-            })
-            .catch(function (error) {
-                console.error(error);
-                MySwal.close();
-                MySwal.fire({
-                    title: "Error",
-                    text: error,
-                    icon: "error",
-                    confirmButtonText: "Ok",
-                });
-            });
+        console.log(v1, v2);
 
-        console.log(data);
-    };
-
-    const handleSubmit = (event: { preventDefault: () => void }) => {
-        event.preventDefault();
-        setData({
-            ...data,
-        });
-        setImg(img);
-        MySwal.fire({
-            title: "Encrypting...",
-            text: "Please wait...",
-            allowOutsideClick: false,
-            didOpen: () => {
-                MySwal.showLoading();
-            },
-        });
-
-        handleAxios(data);
-        sendFileToIPFS(event);
-        console.log(data);
-        
+        console.log(frmd);
     };
 
     return (
@@ -160,13 +96,13 @@ const EncFrm = () => {
                                     </svg>
                                     <div className="flex text-sm text-gray-600">
                                         <label
-                                            htmlFor="file-upload"
+                                            htmlFor="file-upload1"
                                             className="relative cursor-pointer rounded-md bg-white font-medium text-black focus-within:outline-none focus-within:ring-2 focus-within:ring-gray-700 focus-within:ring-offset-2 hover:text-gray-700"
                                         >
                                             <span>{fnm}</span>
                                             <input
-                                                id="file-upload"
-                                                name="file-upload"
+                                                id="file-upload1"
+                                                name="file-upload1"
                                                 type="file"
                                                 onChange={handleFile}
                                                 className="sr-only"
@@ -181,21 +117,45 @@ const EncFrm = () => {
                         </div>
 
                         <div>
-                            <label
-                                htmlFor="name"
-                                className="block text-sm font-medium text-gray-700 mb-2 ml-1"
-                            >
-                                Data
+                            <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">
+                                Pdf
                             </label>
-                            <textarea
-                                id="data"
-                                name="data"
-                                rows={5}
-                                required
-                                onChange={handleChange}
-                                placeholder="Enter data you want to encrypt"
-                                className="mb-3 relative block w-full appearance-none rounded-md rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                            />
+                            <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
+                                <div className="space-y-1 text-center">
+                                    <svg
+                                        className="mx-auto h-12 w-12 text-gray-400"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        viewBox="0 0 48 48"
+                                        aria-hidden="true"
+                                    >
+                                        <path
+                                            d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                            strokeWidth={2}
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        />
+                                    </svg>
+                                    <div className="flex text-sm text-gray-600">
+                                        <label
+                                            htmlFor="file-upload2"
+                                            className="relative cursor-pointer rounded-md bg-white font-medium text-black focus-within:outline-none focus-within:ring-2 focus-within:ring-gray-700 focus-within:ring-offset-2 hover:text-gray-700"
+                                        >
+                                            <span>{fnmm}</span>
+                                            <input
+                                                id="file-upload2"
+                                                name="file-upload2"
+                                                type="file"
+                                                onChange={handleFile}
+                                                className="sr-only"
+                                            />
+                                        </label>
+                                    </div>
+                                    <p className="text-xs text-gray-500">
+                                        PNG & JPG
+                                    </p>
+                                </div>
+                            </div>
                         </div>
 
                         <div>
