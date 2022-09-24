@@ -3,7 +3,9 @@
 @tailwind utilities;
 
 body {
-    background-color: #000;
+    
+     background: linear-gradient(#000,#130f40);  
+     min-height: 100vh; ;  
 }
 
 ::-webkit-scrollbar {
