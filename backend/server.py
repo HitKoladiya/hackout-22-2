@@ -30,12 +30,12 @@ def process_decode():
             data = request.get_json()
             id = recieve_data_decode(data)
             return {
-                "status": "success",
+                "status": "200",
                 "IpfsHash" : id
             }
         except :
             return {
-                "status": "failed"
+                "status": "404"
             }
 
 if __name__ == "__main__":
