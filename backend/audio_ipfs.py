@@ -45,7 +45,6 @@ def recieve_audio_data_encode(j):
     data = j["data"]
     l = image_link.split('://')[1]
     base_url += l
-    print(base_url)
     download_encode(base_url)
     encode_audio(data)
     return send_audio_to_cloud("encoded_song.wav")

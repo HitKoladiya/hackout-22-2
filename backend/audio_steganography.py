@@ -20,6 +20,3 @@ def decode_audio():
     decoded = string.split("###")[0]
     song.close()
     return decoded
-
-encode_audio("hello")
-print(decode_audio())
