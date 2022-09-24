@@ -1,4 +1,3 @@
-import requests
 from Access_t import jwt
 import requests
 import  json
@@ -45,7 +44,7 @@ def recieve_data_decode(j):
     base_url += l
     print(base_url)
     download_decode(base_url)
-    return decode("base_image.png")
+    return decode("encoded_image.png")
 
 def download_encode(durl):
     req = requests.get(durl)
