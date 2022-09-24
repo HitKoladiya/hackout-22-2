@@ -71,9 +71,12 @@ const EncFrm = () => {
     const handleSubmit = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
         MySwal.fire({
-            title: 'Uploading File',
-            text: 'Please wait...',
+            title: "Encrypting...",
+            text: "Please wait...",
             allowOutsideClick: false,
+            didOpen: () => {
+                MySwal.showLoading();
+            },
         });
         await sendFileToIPFS(event);
 
@@ -115,7 +118,7 @@ const EncFrm = () => {
             <div className="w-full max-w-md space-y-8">
                 <div>
                     <h2 className=" text-center text-3xl font-bold tracking-tight text-gray-100">
-                        Decrypt Data
+                        Encrypt Data
                     </h2>
                 </div>
                 <form className="mt-8 space-y-6">
@@ -125,7 +128,7 @@ const EncFrm = () => {
                                 htmlFor="name"
                                 className="block text-sm font-medium text-gray-700 mb-2 ml-1"
                             >
-                                Encrypted Data
+                                Data
                             </label>
                             <textarea
                                 id="data"
@@ -133,14 +136,14 @@ const EncFrm = () => {
                                 rows={5}
                                 required
                                 onChange={handleChange}
-                                placeholder="Enter data you want to decrypt"
+                                placeholder="Enter data you want to encrypt"
                                 className="mb-3 relative block w-full appearance-none rounded-md rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                             />
                         </div>
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">
-                                Encrypted image
+                                Image
                             </label>
                             <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
                                 <div className="space-y-1 text-center">

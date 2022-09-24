@@ -7,8 +7,12 @@ const EncFrm = () => {
 
     const MySwal = withReactContent(Swal)
 
+    const [data, setData] = useState({
+        data: "",
+        image: "",
+    });
 
-    const [img, setImg] = useState("");
+    const [img, setImg] = useState(null);
 
     const sendFileToIPFS = async (e: any) => {
         if (img) {
@@ -30,7 +34,8 @@ const EncFrm = () => {
 
                 const ImgHash = `ipfs://${resFile.data.IpfsHash}`;
                 console.log(ImgHash);
-                setImg(ImgHash);
+                setData({ ...data, image: ImgHash });
+                console.log(data);
 
                 //Take a look at your Pinata Pinned section, you will see a new file added to you list.   
 
@@ -45,28 +50,65 @@ const EncFrm = () => {
 
     const [fnm, setFnm] = useState("Upload File");
 
+    const handleChange = (e: any) => {
+        setData({
+            ...data,
+            [e.target.name]: e.target.value,
+        });
+        console.log(data);
+    };
 
     const handleFile = async (e: any) => {
         let file = await e.target.files[0];
+
         await setImg(file);
         setFnm(file.name);
         console.log(img);
+        console.log(data);
 
     };
 
     const handleSubmit = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
         MySwal.fire({
-            title: "Decrypting...",
+            title: "Encrypting...",
             text: "Please wait...",
             allowOutsideClick: false,
             didOpen: () => {
                 MySwal.showLoading();
             },
         });
-
         await sendFileToIPFS(event);
-        console.log(img);
+
+        const options = {
+            method: 'POST',
+            url: 'http://127.0.0.1:5000/image_encode',
+            data: data,
+        };
+
+        axios.request(options).then(function (response) {
+            console.log(response.data);
+            MySwal.close();
+
+            MySwal.fire({
+                title: 'Message encrypted and uploaded to IPFS',
+                text: response.data,
+                icon: 'success',
+                confirmButtonText: 'Ok'
+            });
+        }).catch(function (error) {
+            console.error(error);
+            MySwal.close();
+            MySwal.fire({
+                title: 'Error',
+                text: error,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+        });
+
+
+        console.log(data);
 
 
     };
@@ -76,16 +118,32 @@ const EncFrm = () => {
             <div className="w-full max-w-md space-y-8">
                 <div>
                     <h2 className=" text-center text-3xl font-bold tracking-tight text-gray-100">
-                        Decrypt Data
+                        Encrypt Data
                     </h2>
                 </div>
                 <form className="mt-8 space-y-6">
                     <div className=" rounded-md shadow- bg-white shadow-gray-800 p-5">
-
+                        <div>
+                            <label
+                                htmlFor="name"
+                                className="block text-sm font-medium text-gray-700 mb-2 ml-1"
+                            >
+                                Data
+                            </label>
+                            <textarea
+                                id="data"
+                                name="data"
+                                rows={5}
+                                required
+                                onChange={handleChange}
+                                placeholder="Enter data you want to encrypt"
+                                className="mb-3 relative block w-full appearance-none rounded-md rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                            />
+                        </div>
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">
-                                Encrypted image
+                                Image
                             </label>
                             <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
                                 <div className="space-y-1 text-center">

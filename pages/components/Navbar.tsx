@@ -1,5 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Disclosure } from "@headlessui/react";
+import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
@@ -7,7 +7,7 @@ function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
 }
 
-import React from "react";
+import React, { Fragment } from "react";
 
 const Navbar = (props: { current: string }) => {
     const navigation = [
