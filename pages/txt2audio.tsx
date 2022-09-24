@@ -8,7 +8,7 @@ const txt2audio = () => {
         <>
             <Navbar current="encrypt" />
             <div className="">
-                <EncFrm />
+                {/* <EncFrm /> */}
                 <DncFrm />
             </div>
         </>

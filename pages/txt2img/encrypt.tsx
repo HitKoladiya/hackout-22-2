@@ -11,13 +11,15 @@ const EncFrm = () => {
         image: "",
     });
 
-    const [img, setImg] = useState(null);
+    const [img, setImg] = useState("");
 
     const sendFileToIPFS = async (e: any) => {
+        console.log("file");
+
         if (img) {
             try {
                 const formData = new FormData();
-                formData.append("file", img);
+                await formData.append("file", img);
 
                 const resFile = await axios({
                     method: "post",
@@ -30,9 +32,12 @@ const EncFrm = () => {
                     },
                 });
 
-                const ImgHash = `ipfs://${resFile.data.IpfsHash}`;
+                const ImgHash = await `ipfs://${resFile.data.IpfsHash}`;
+                await setData({ ...data, image: ImgHash });
                 console.log(ImgHash);
-                setData({ ...data, image: ImgHash });
+                await setImg(ImgHash);
+                console.log("img");
+
                 console.log(data);
 
                 //Take a look at your Pinata Pinned section, you will see a new file added to you list.
@@ -45,45 +50,38 @@ const EncFrm = () => {
 
     const [fnm, setFnm] = useState("Upload File");
 
-    const handleChange = (e: any) => {
+    const handleChange = (e: { target: { name: any; value: any } }) => {
         setData({
             ...data,
             [e.target.name]: e.target.value,
         });
+        sendFileToIPFS(img);
         console.log(data);
     };
 
     const handleFile = async (e: any) => {
         let file = await e.target.files[0];
-
-        await setImg(file);
         setFnm(file.name);
         console.log(img);
+        await setImg(file);
         console.log(data);
-        setData({ ...data, image: file });
+        await sendFileToIPFS(file);
+        setData({ ...data, image: img });
     };
 
-    const handleSubmit = async (event: { preventDefault: () => void }) => {
-        event.preventDefault();
-        MySwal.fire({
-            title: "Encrypting...",
-            text: "Please wait...",
-            allowOutsideClick: false,
-            didOpen: () => {
-                MySwal.showLoading();
-            },
-        });
-        await sendFileToIPFS(event);
-
+    const handleAxios = async (data: any) => {
         const options = {
             method: "POST",
             url: "http://127.0.0.1:5000/image_encode",
-            data: data,
+            data: {
+                data: data.data,
+                image: img,
+            },
         };
 
         axios
             .request(options)
-            .then(function (response) {
+            .then(async (response) => {
                 console.log(response.data);
                 MySwal.close();
 
@@ -93,6 +91,7 @@ const EncFrm = () => {
                     icon: "success",
                     confirmButtonText: "Ok",
                 });
+                window.location.assign(`https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`);
             })
             .catch(function (error) {
                 console.error(error);
@@ -108,6 +107,27 @@ const EncFrm = () => {
         console.log(data);
     };
 
+    const handleSubmit = (event: { preventDefault: () => void }) => {
+        event.preventDefault();
+        setData({
+            ...data,
+        });
+        setImg(img);
+        MySwal.fire({
+            title: "Encrypting...",
+            text: "Please wait...",
+            allowOutsideClick: false,
+            didOpen: () => {
+                MySwal.showLoading();
+            },
+        });
+
+        handleAxios(data);
+        sendFileToIPFS(event);
+        console.log(data);
+        
+    };
+
     return (
         <div className="flex mb-10 pb-0 min-h-full items-center justify-center py-10 px-4 sm:px-6 lg:px-8 ">
             <div className="w-full max-w-md space-y-8">
@@ -118,24 +138,6 @@ const EncFrm = () => {
                 </div>
                 <form className="mt-8 space-y-6">
                     <div className=" rounded-md shadow- bg-white shadow-gray-800 p-5">
-                        <div>
-                            <label
-                                htmlFor="name"
-                                className="block text-sm font-medium text-gray-700 mb-2 ml-1"
-                            >
-                                Data
-                            </label>
-                            <textarea
-                                id="data"
-                                name="data"
-                                rows={5}
-                                required
-                                onChange={handleChange}
-                                placeholder="Enter data you want to encrypt"
-                                className="mb-3 relative block w-full appearance-none rounded-md rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                            />
-                        </div>
-
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">
                                 Image
@@ -176,6 +178,24 @@ const EncFrm = () => {
                                     </p>
                                 </div>
                             </div>
+                        </div>
+
+                        <div>
+                            <label
+                                htmlFor="name"
+                                className="block text-sm font-medium text-gray-700 mb-2 ml-1"
+                            >
+                                Data
+                            </label>
+                            <textarea
+                                id="data"
+                                name="data"
+                                rows={5}
+                                required
+                                onChange={handleChange}
+                                placeholder="Enter data you want to encrypt"
+                                className="mb-3 relative block w-full appearance-none rounded-md rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                            />
                         </div>
 
                         <div>

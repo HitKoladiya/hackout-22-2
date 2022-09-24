@@ -1,17 +1,16 @@
 import Link from "next/link";
 import React from "react";
-import Navbar from "./Navbar";
 
 const btns = [
     {
-        name: "text to image",
+        name: "pdf to audio",
         img: "data:image/svg+xml;charset=UTF-8;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc0NicgaGVpZ2h0PSc0NScgZmlsbD0nbm9uZSc+PHBhdGggZmlsbD0nIzA5NTU4NicgZmlsbC1ydWxlPSdldmVub2RkJyBkPSdNMjQuMzI4IDE2LjkwMUg2LjA4MmEzLjc3MSAzLjc3MSAwIDAgMC0zLjc3MSAzLjc3MXYxOC4yNDZhMy43NzEgMy43NzEgMCAwIDAgMy43NyAzLjc3MWgxOC4yNDdhMy43NzEgMy43NzEgMCAwIDAgMy43Ny0zLjc3VjIwLjY3MWEzLjc3MSAzLjc3MSAwIDAgMC0zLjc3LTMuNzdabS0xOC4yNDYtMi4zMUE2LjA4MiA2LjA4MiAwIDAgMCAwIDIwLjY3MXYxOC4yNDZBNi4wODIgNi4wODIgMCAwIDAgNi4wODIgNDVoMTguMjQ2YTYuMDgyIDYuMDgyIDAgMCAwIDYuMDgyLTYuMDgyVjIwLjY3MmE2LjA4MiA2LjA4MiAwIDAgMC02LjA4Mi02LjA4Mkg2LjA4MlonIGNsaXAtcnVsZT0nZXZlbm9kZCcvPjxwYXRoIGZpbGw9JyMwOTU1ODYnIGZpbGwtcnVsZT0nZXZlbm9kZCcgZD0nTTE1LjE3IDYuMjdBNi4xNjIgNi4xNjIgMCAwIDEgMjEuMzMxLjEwOGgxOC4wMjVhNi4xNjIgNi4xNjIgMCAwIDEgNi4xNjIgNi4xNjJ2MTguMDI1YTYuMTYyIDYuMTYyIDAgMCAxLTYuMTYyIDYuMTYzSDMyLjA3di0xMS4xN2MwLS40LS4wMzgtLjc5LS4xMS0xLjE2OGgxLjE2M2MuMTMzIDAgLjIwNy4wNTMuMjIuMTZsLjggMi42NGExLjU0OSAxLjU0OSAwIDAgMCAxLjQ4IDEuMDhoLjA4Yy4yOCAwIC41LS4xMTMuNjYtLjM0YS43NDUuNzQ1IDAgMCAwIC4xMi0uNzRsLTQuMjgtMTIuNDRjLS4xMDctLjMyLS4zLS41OC0uNTgtLjc4LS4yNjctLjItLjU3My0uMy0uOTItLjNoLS4xMmMtLjMzMyAwLS42NC4xLS45Mi4zLS4yOC4yLS40NzMuNDYtLjU4Ljc4bC0xLjY2MiA0LjgzMmE2LjE3MyA2LjE3MyAwIDAgMC0xLjUxMy0uMTg3aC0xMC43NFY2LjI3Wk0zMS4zNTMgMTYuNGE2LjE5IDYuMTkgMCAwIDAtMi4xOTYtMi4zNWwxLjQyNi00LjYzYzAtLjAxMy4wMDctLjAyLjAyLS4wMi4wMTMgMCAuMDIuMDA3LjAyLjAybDIuMSA2LjgyYy4wMTMuMDQuMDA3LjA4LS4wMi4xMmEuMTM2LjEzNiAwIDAgMS0uMS4wNGgtMS4yNVpNNy43NDYgMjMuNzQ4YzAtLjYzOC41MTctMS4xNTYgMS4xNTUtMS4xNTZoMTIuNDhhMS4xNTUgMS4xNTUgMCAwIDEgMCAyLjMxMUg4LjlhMS4xNTUgMS4xNTUgMCAwIDEtMS4xNTUtMS4xNTVaTTcuNzQ2IDI5Ljg4YzAtLjYzOC41MTctMS4xNTUgMS4xNTUtMS4xNTVoMTIuNDhhMS4xNTUgMS4xNTUgMCAwIDEgMCAyLjMxSDguOWExLjE1NiAxLjE1NiAwIDAgMS0xLjE1NS0xLjE1NVpNNy43NDYgMzYuMDEyYzAtLjYzOC41MTctMS4xNTUgMS4xNTUtMS4xNTVoMTIuNDhhMS4xNTUgMS4xNTUgMCAwIDEgMCAyLjMxSDguOWExLjE1NSAxLjE1NSAwIDAgMS0xLjE1NS0xLjE1NVonIGNsaXAtcnVsZT0nZXZlbm9kZCcvPjwvc3ZnPg==",
-        link: "/txt2img",
+        link: "/pdf2audio",
     },
     {
-        name: "iamge to image",
+        name: "pdf to image",
         img: "data:image/svg+xml;charset=UTF-8;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSczMCcgaGVpZ2h0PSczMCcgZmlsbD0nbm9uZSc+PGRlZnMvPjxwYXRoIGZpbGw9JyNFNjdFMjInIGQ9J00wIDZhNiA2IDAgMDE2LTZoMThhNiA2IDAgMDE2IDZ2MThhNiA2IDAgMDEtNiA2SDZhNiA2IDAgMDEtNi02VjZ6Jy8+PHBhdGggZmlsbD0nI2ZmZicgZmlsbC1ydWxlPSdldmVub2RkJyBkPSdNMTMuNjUgNy4yYS43NS43NSAwIDAwLS43NS43NVYxMkg5LjQ1YS43NS43NSAwIDAwLS43NS43NXY5LjNjMCAuNDEuMzQuNzUuNzUuNzVoNy4wNWMuNDEgMCAuNzUtLjM0Ljc1LS43NVYxOGgzLjQ1Yy40MSAwIC43NS0uMzQuNzUtLjc1di05LjNhLjc1Ljc1IDAgMDAtLjc1LS43NWgtNy4wNXptLS43NSA2LjN2My43NWMwIC40MS4zNC43NS43NS43NWgyLjF2My4zSDEwLjJ2LTcuOGgyLjd6JyBjbGlwLXJ1bGU9J2V2ZW5vZGQnLz48L3N2Zz4=",
-        link: "/img2img",
+        link: "/pdf2img",
     },
     {
         name: "text to audio",
@@ -19,9 +18,9 @@ const btns = [
         link: "/txt2audio",
     },
     {
-        name: "text to video",
+        name: "text to image",
         img: "data:image/svg+xml;charset=UTF-8;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSczMCcgaGVpZ2h0PSczMCcgZmlsbD0nbm9uZSc+PGRlZnMvPjxwYXRoIGZpbGw9JyNFNjdFMjInIGQ9J00wIDZhNiA2IDAgMDE2LTZoMThhNiA2IDAgMDE2IDZ2MThhNiA2IDAgMDEtNiA2SDZhNiA2IDAgMDEtNi02VjZ6Jy8+PHBhdGggZmlsbD0nI2ZmZicgZmlsbC1ydWxlPSdldmVub2RkJyBkPSdNMTAuOCAxOC41NFY5LjQ1aDguMDNsLTguMDMgOS4xem0uMjMgMi4wMWg4LjE3VjExLjNsLTguMTcgOS4yNXpNMjAuNyA5LjZ2MTEuN2MwIC40MS0uMzQuNzUtLjc1Ljc1aC05LjlhLjc1Ljc1IDAgMDEtLjc1LS43NVY4LjdjMC0uNDEuMzQtLjc1Ljc1LS43NWg5LjljLjQxIDAgLjc1LjM0Ljc1Ljc1di45eicgY2xpcC1ydWxlPSdldmVub2RkJy8+PC9zdmc+",
-        link: "/txt2video",
+        link: "/txt2img",
     },
 ];
 
@@ -31,22 +30,30 @@ const Cards = () => {
             <div className="flex py-20 justify-center items-center">
                 <div className="flex w-10/12">
                     {btns.map((item) => (
-                        <Link href={item.link} key={item.name}>
-                            <div className="group m-4 w-1/4 bg-gray-100 rounded-lg p-5 shadow-inner cursor-pointer">
-                                <div className="p-14 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-100 xl:aspect-w-7 xl:aspect-h-8">
-                                    <img
-                                        src={item.img}
-                                        alt={item.name}
-                                        className="h-full  w-full object-cover object-center group-hover:opacity-75"
-                                    />
-                                </div>
-                                <hr className="my-4 border-gray-400" />
-                                <h3 className="mt-4 text-center text-3xl text-gray-900 font-bold">
-                                    {item.name.charAt(0).toUpperCase() +
-                                        item.name.slice(1)}
-                                </h3>
+                        <div className="group m-4 w-1/4 bg-gray-100 rounded-lg p-5 shadow-inner cursor-pointer">
+                            <div className="p-14 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-100 xl:aspect-w-7 xl:aspect-h-8">
+                                <img
+                                    src={item.img}
+                                    alt={item.name}
+                                    className="h-full  w-full object-cover object-center group-hover:opacity-75"
+                                />
                             </div>
-                        </Link>
+                            <hr className="my-4 border-gray-400" />
+                            <h3 className="mt-4 text-center text-3xl text-gray-900 font-bold">
+                                {item.name.charAt(0).toUpperCase() +
+                                    item.name.slice(1)}
+                            </h3>
+                            <Link href={`${item.link}/encrypt`}>
+                                <button className="mt-10 group relative flex w-full justify-center rounded-md border shadow-md shadow-gray-300 border-transparent bg-black py-2 px-4 text-sm font-medium text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                                    Encode
+                                </button>
+                            </Link>
+                            <Link href={`${item.link}/decrypt`}>
+                                <button className="mt-10 group relative flex w-full justify-center rounded-md border shadow-md shadow-gray-300 border-transparent bg-black py-2 px-4 text-sm font-medium text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                                    Descode
+                                </button>
+                            </Link>
+                        </div>
                     ))}
                 </div>
             </div>
