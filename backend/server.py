@@ -12,32 +12,22 @@ def hello_world():
 @app.route("/image_encode",methods = ["post","get"])
 def process_encode():
     if request.method == 'POST':
-        try:
-            data = request.get_json()
-            id = recieve_data_encode(data)
-            return {
-                "status": "200",
-                "IpfsHash" : id
-            }
-        except :
-            return {
-                "status": "404"
-            }
+        data = request.get_json()
+        id = recieve_data_encode(data)
+        return {
+            "status": "200",
+            "IpfsHash" : id
+        }
 @app.route("/image_decode",methods = ["post","get"])
 def process_decode():
     if request.method == 'POST':
-        try:
-            data = request.get_json()
-            id = recieve_data_decode(data)
+        data = request.get_json()
+        id = recieve_data_decode(data)
 
-            return {
-                "status": "200",
-                "IpfsHash" : id
-            }
-        except :
-            return {
-                "status": "404"
-            }
+        return {
+            "status": "200",
+            "IpfsHash" : id
+        }
 
 if __name__ == "__main__":
     app.run(debug=True)
