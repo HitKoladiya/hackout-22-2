@@ -23,7 +23,31 @@ const EncFrm = () => {
         let file = await e.target.files[0];
         setFile(file);
         setFnm(file.name);
+
+        console.log("0");
+        
+
+        const options = {
+            method: "POST",
+            url: "http://127.0.0.1:5000/image/",
+            data: file,
+        };
+
+        console.log("1");
+
+        await axios
+            .request(options)
+            .then(function (response) {
+                console.log(response.data);
+                console.log("1");
+            })
+            .catch(function (error) {
+                console.error(error);
+                console.log("2");
+            });
+
         console.log(file);
+        console.log("File Uploaded");
     };
 
     const handleSubmit = async (event: { preventDefault: () => void }) => {
@@ -34,20 +58,7 @@ const EncFrm = () => {
             file: file,
         };
         console.log(finalData);
-        const options = {
-            method: "POST",
-            url: "http://127.0.0.1:5000/image",
-            data: finalData,
-        };
 
-        await axios
-            .request(options)
-            .then(function (response) {
-                console.log(response.data);
-            })
-            .catch(function (error) {
-                console.error(error);
-            });
         alert(JSON.stringify(finalData));
     };
 
