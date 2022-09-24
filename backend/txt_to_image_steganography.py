@@ -11,3 +11,4 @@ def decode_txt(image):
     f.write(text)
     f.close()
 
+
