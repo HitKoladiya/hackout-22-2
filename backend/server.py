@@ -1,6 +1,6 @@
 from flask import  Flask,request,send_file
 from flask_cors import CORS
-from ipfs import recieve_data
+from ipfs import recieve_data_encode,recieve_data_decode
 
 app = Flask(__name__)
 CORS(app)
@@ -9,12 +9,12 @@ CORS(app)
 def hello_world():
     return "hello world"
 
-@app.route("/image",methods = ["post","get"])
-def process():
+@app.route("/image_encode",methods = ["post","get"])
+def process_encode():
     if request.method == 'POST':
         try:
             data = request.get_json()
-            id = recieve_data(data)
+            id = recieve_data_encode(data)
             return {
                 "status": "success",
                 "IpfsHash" : id
@@ -23,7 +23,20 @@ def process():
             return {
                 "status": "failed"
             }
-
+@app.route("/image_decode",methods = ["post","get"])
+def process_decode():
+    if request.method == 'POST':
+        try:
+            data = request.get_json()
+            id = recieve_data_decode(data)
+            return {
+                "status": "success",
+                "IpfsHash" : id
+            }
+        except :
+            return {
+                "status": "failed"
+            }
 
 if __name__ == "__main__":
     app.run(debug=True)
