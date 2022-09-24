@@ -21,3 +21,15 @@ frontend
 `yarn `
 
 `yarn dev`
+
+
+# errors
+
+ we have stored our image in  pinata IPFS 
+ 
+ recently the servers of pinata is down now so this will generate an error 
+ 
+ for reerence 
+ 
+ https://gateway.pinata.cloud/ipfs/bafybeigu5yu6dvvvaary253un2ljhyl33fq4s32gmqixcvalvrnhktbaoq
+ 
