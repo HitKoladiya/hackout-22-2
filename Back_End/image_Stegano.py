@@ -7,5 +7,5 @@ def Encode(src, message):
 def Decode(src):
     print(lsb.reveal('./dest.png'))
 
-Encode("hit.jpg","i am hit koladiya")
-Decode("hit.jpg")
+# Encode("hit.jpg","i am hit koladiya")
+# Decode("hit.jpg")
