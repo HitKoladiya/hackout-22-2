@@ -7,17 +7,19 @@ def encode_audio(string):
     for i, bit in enumerate(bits):
         frame_bytes[i] = (frame_bytes[i] & 254) | bit
     frame_modified = bytes(frame_bytes)
-    with wave.open('song_embedded.wav', 'wb') as fd:
+    with wave.open('encoded_song.wav', 'wb') as fd:
         fd.setparams(song.getparams())
         fd.writeframes(frame_modified)
         song.close()
 
 def decode_audio():
-    song = wave.open("song_embedded.wav", mode='rb')
+    song = wave.open("encoded_song.wav", mode='rb')
     frame_bytes = bytearray(list(song.readframes(song.getnframes())))
     extracted = [frame_bytes[i] & 1 for i in range(len(frame_bytes))]
     string = "".join(chr(int("".join(map(str, extracted[i:i + 8])), 2)) for i in range(0, len(extracted), 8))
     decoded = string.split("###")[0]
     song.close()
     return decoded
-decode_audio()
+
+encode_audio("hello")
+print(decode_audio())

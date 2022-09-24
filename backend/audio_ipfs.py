@@ -28,7 +28,7 @@ def auth_test():
 
 def download_encode(durl):
     req = requests.get(durl)
-    with open("base_song.wav", 'wb') as f:
+    with open("file_example_WAV_1MG.wav", 'wb') as f:
         for chunk in req.iter_content(chunk_size=8192):
             if chunk:
                 f.write(chunk)
@@ -59,6 +59,7 @@ def recieve_audio_data_decode(j):
     download_decode(base_url)
     return decode_audio()
 j = {
-    "data" : "hello",
+    "data" : "byee",
     "audio": "ipfs://bafybeihsuqdu4wfcunmo6p3diswwfpyf74furmp67o5coyfyadvbekhe7i"
 }
+recieve_audio_data_encode(j)
