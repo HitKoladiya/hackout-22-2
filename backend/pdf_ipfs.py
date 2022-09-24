@@ -2,7 +2,7 @@ from Access_t import jwt
 import requests
 import  json
 from text_steganography import encode,decode
-from pdf_to_txt import  Pdf_to_txt
+from pdf_to_txt import  Pdf_to_txt,Txt_to_Pdf
 def send_to_cloud(img):
     auth_test()
     url = "https://api.pinata.cloud/pinning/pinFileToIPFS"
@@ -67,7 +67,9 @@ def recieve_pdf_data_decode(j):
     base_url += l
     print(base_url)
     download_decode(base_url)
-    return decode("encoded_image.png")
+    s = decode("encoded_image.png")
+    Txt_to_Pdf(s)
+    return send_pdf_to_cloud("new.pdf")
 
 def download_pdf(durl):
     req = requests.get(durl)
