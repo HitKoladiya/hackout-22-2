@@ -53,7 +53,7 @@ def process_audio_decode():
 def process_txt_encode():
     if request.method == 'POST':
         data = request.get_json()
-        id = recieve_audio_data_encode(data)
+        id = recieve_pdf_data_encode(data)
         return {
             "status": "200",
             "IpfsHash" : id
