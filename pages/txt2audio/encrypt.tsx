@@ -125,7 +125,7 @@ const EncFrm = () => {
         handleAxios(data);
         sendFileToIPFS(event);
         console.log(data);
-        
+
     };
 
     return (
@@ -133,14 +133,14 @@ const EncFrm = () => {
             <div className="w-full max-w-md space-y-8">
                 <div>
                     <h2 className=" text-center text-3xl font-bold tracking-tight text-gray-100">
-                        Encrypt Data txt2img
+                        Encrypt Data txt2audio
                     </h2>
                 </div>
                 <form className="mt-8 space-y-6">
                     <div className=" rounded-md shadow- bg-white shadow-gray-800 p-5">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">
-                                Image
+                                Audio
                             </label>
                             <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
                                 <div className="space-y-1 text-center">
@@ -174,7 +174,7 @@ const EncFrm = () => {
                                         </label>
                                     </div>
                                     <p className="text-xs text-gray-500">
-                                        PNG & JPG
+                                        Choose a wav file
                                     </p>
                                 </div>
                             </div>
