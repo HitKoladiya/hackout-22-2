@@ -4,10 +4,11 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 const EncFrm = () => {
+    const MySwal = withReactContent(Swal);
     const [frmd, setFrmd] = useState({});
 
     const [fnm, setFnm] = useState("Upload File");
-    const [fnmm, setFnmm] = useState("Upload File");
+    const [fnmm, setFnmm] = useState("Upload File2");
 
     const sendFileToIPFS = async (img: any) => {
         console.log("file");
@@ -28,7 +29,14 @@ const EncFrm = () => {
                     },
                 });
 
-                return await `ipfs://${resFile.data.IpfsHash}`;
+                if (img.type == "image") {
+                    const ImgHash = await `ipfs://${resFile.data.IpfsHash}`;
+                    console.log(ImgHash);
+                    setFrmd({ ...frmd, img: ImgHash });
+                }
+
+                const hash = await `ipfs://${resFile.data.IpfsHash}`;
+                return hash;
 
                 //Take a look at your Pinata Pinned section, you will see a new file added to you list.
             } catch (error) {
@@ -44,23 +52,65 @@ const EncFrm = () => {
 
         setFrmd({ ...frmd, [name]: file });
 
-        if (name === "file-upload1") {
+        if (name == "fileupload1") {
             setFnm(file.name);
-        } else if (name === "file-upload2") {
+        } else {
             setFnmm(file.name);
         }
 
-        console.log(frmd);
+        console.log(name);
     };
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
+        MySwal.fire({
+            title: "Encrypting...",
+            text: "Please wait...",
+            allowOutsideClick: false,
+            didOpen: () => {
+                MySwal.showLoading();
+            },
+        });
+        const v1 = await sendFileToIPFS(frmd.fileupload1);
+        const v2 = await sendFileToIPFS(frmd.fileupload2);
 
-        const v1 = sendFileToIPFS("file-upload1");
-        const v2 = sendFileToIPFS("file-upload2");
+        const options = {
+            method: "POST",
+            url: "http://127.0.0.1:5000/pdf_encode",
+            data: {
+                image: v1,
+                pdf: v2,
+            },
+        };
+
+        await axios
+            .request(options)
+            .then(function (response) {
+                console.log(response.data);
+                MySwal.close();
+
+                MySwal.fire({
+                    title: "Encoded Successfully",
+                    text: `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`,
+                    icon: "success",
+                    confirmButtonText: "Ok",
+                });
+                window.location.assign(
+                    `https://gateway.pinata.cloud/ipfs/${response.data.IpfsHash}`
+                );
+            })
+            .catch(function (error) {
+                console.error(error);
+                MySwal.close();
+                MySwal.fire({
+                    title: "Error",
+                    text: error,
+                    icon: "error",
+                    confirmButtonText: "Ok",
+                });
+            });
 
         console.log(v1, v2);
-
         console.log(frmd);
     };
 
@@ -96,13 +146,13 @@ const EncFrm = () => {
                                     </svg>
                                     <div className="flex text-sm text-gray-600">
                                         <label
-                                            htmlFor="file-upload1"
+                                            htmlFor="fileupload1"
                                             className="relative cursor-pointer rounded-md bg-white font-medium text-black focus-within:outline-none focus-within:ring-2 focus-within:ring-gray-700 focus-within:ring-offset-2 hover:text-gray-700"
                                         >
                                             <span>{fnm}</span>
                                             <input
-                                                id="file-upload1"
-                                                name="file-upload1"
+                                                id="fileupload1"
+                                                name="fileupload1"
                                                 type="file"
                                                 onChange={handleFile}
                                                 className="sr-only"
@@ -138,13 +188,13 @@ const EncFrm = () => {
                                     </svg>
                                     <div className="flex text-sm text-gray-600">
                                         <label
-                                            htmlFor="file-upload2"
+                                            htmlFor="fileupload2"
                                             className="relative cursor-pointer rounded-md bg-white font-medium text-black focus-within:outline-none focus-within:ring-2 focus-within:ring-gray-700 focus-within:ring-offset-2 hover:text-gray-700"
                                         >
                                             <span>{fnmm}</span>
                                             <input
-                                                id="file-upload2"
-                                                name="file-upload2"
+                                                id="fileupload2"
+                                                name="fileupload2"
                                                 type="file"
                                                 onChange={handleFile}
                                                 className="sr-only"
