@@ -16,12 +16,12 @@ def process_encode():
             data = request.get_json()
             id = recieve_data_encode(data)
             return {
-                "status": "success",
+                "status": "200",
                 "IpfsHash" : id
             }
         except :
             return {
-                "status": "failed"
+                "status": "404"
             }
 @app.route("/image_decode",methods = ["post","get"])
 def process_decode():
