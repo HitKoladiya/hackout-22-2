@@ -1,19 +1,16 @@
 import axios from "axios";
-import React, { useState } from "react";
-import Swal from 'sweetalert2'
+import React, { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 const EncFrm = () => {
-
-    const MySwal = withReactContent(Swal)
-
+    const MySwal = withReactContent(Swal);
 
     const [img, setImg] = useState("");
 
     const sendFileToIPFS = async (e: any) => {
         if (img) {
             try {
-
                 const formData = new FormData();
                 formData.append("file", img);
 
@@ -22,9 +19,9 @@ const EncFrm = () => {
                     url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
                     data: formData,
                     headers: {
-                        'pinata_api_key': `f07278d2821266c978fe`,
-                        'pinata_secret_api_key': `350ac748c968d726208495d0ab1cf85264856db12cae91e23b4471c166b146a0`,
-                        "Content-Type": "multipart/form-data"
+                        pinata_api_key: `f07278d2821266c978fe`,
+                        pinata_secret_api_key: `350ac748c968d726208495d0ab1cf85264856db12cae91e23b4471c166b146a0`,
+                        "Content-Type": "multipart/form-data",
                     },
                 });
 
@@ -32,26 +29,21 @@ const EncFrm = () => {
                 console.log(ImgHash);
                 setImg(ImgHash);
 
-                //Take a look at your Pinata Pinned section, you will see a new file added to you list.   
-
-
-
+                //Take a look at your Pinata Pinned section, you will see a new file added to you list.
             } catch (error) {
-                console.log("Error sending File to IPFS: ")
-                console.log(error)
+                console.log("Error sending File to IPFS: ");
+                console.log(error);
             }
         }
-    }
+    };
 
     const [fnm, setFnm] = useState("Upload File");
-
 
     const handleFile = async (e: any) => {
         let file = await e.target.files[0];
         await setImg(file);
         setFnm(file.name);
         console.log(img);
-
     };
 
     const handleSubmit = async (event: { preventDefault: () => void }) => {
@@ -67,36 +59,37 @@ const EncFrm = () => {
 
         await sendFileToIPFS(event);
         const options = {
-            method: 'POST',
-            url: 'http://127.0.0.1:5000/image_decode',
+            method: "POST",
+            url: "http://127.0.0.1:5000/image_decode",
             data: {
-                "image": "ipfs://Qme9PeyfFRPD5kAhe8Xq42noZYVWsYp1XouLRPg3Ls4RKH"
+                image: "ipfs://Qme9PeyfFRPD5kAhe8Xq42noZYVWsYp1XouLRPg3Ls4RKH",
             },
         };
 
-        axios.request(options).then(function (response) {
-            console.log(response.data);
-            MySwal.close();
+        axios
+            .request(options)
+            .then(function (response) {
+                console.log(response.data);
+                MySwal.close();
 
-            MySwal.fire({
-                title: 'Your Decrypted message is:',
-                text: response.data.decoded_text,
-                icon: 'success',
-                confirmButtonText: 'Ok'
+                MySwal.fire({
+                    title: "Your Decrypted message is:",
+                    text: response.data.decoded_text,
+                    icon: "success",
+                    confirmButtonText: "Ok",
+                });
+            })
+            .catch(function (error) {
+                console.error(error);
+                MySwal.close();
+                MySwal.fire({
+                    title: "Error",
+                    text: error,
+                    icon: "error",
+                    confirmButtonText: "Ok",
+                });
             });
-        }).catch(function (error) {
-            console.error(error);
-            MySwal.close();
-            MySwal.fire({
-                title: 'Error',
-                text: error,
-                icon: 'error',
-                confirmButtonText: 'Ok'
-            });
-        });
         // console.log(img);
-
-
     };
 
     return (
@@ -104,13 +97,11 @@ const EncFrm = () => {
             <div className="w-full max-w-md space-y-8">
                 <div>
                     <h2 className=" text-center text-3xl font-bold tracking-tight text-gray-100">
-                        Decrypt Data
+                        Decrypt Data img2img
                     </h2>
                 </div>
                 <form className="mt-8 space-y-6">
                     <div className=" rounded-md shadow- bg-white shadow-gray-800 p-5">
-
-
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">
                                 Encrypted image
