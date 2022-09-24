@@ -27,7 +27,7 @@ frontend
 
  we have stored our image in  pinata IPFS 
  
- recently the servers of pinata is down now so this will generate an error 
+ as the servers of Pinata are down, hence an error will be produced.
  
  for reference 
  
