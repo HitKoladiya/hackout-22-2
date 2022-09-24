@@ -19,8 +19,7 @@ def send_to_cloud(img):
 
     response = requests.request("POST", url, headers=headers, data=payload, files = files)
 
-    print(response.text)
-
+    return response["IpfsHash"]
 def auth_test():
     url = "https://api.pinata.cloud/data/testAuthentication"
     payload = {"hey ":"1"}
@@ -38,7 +37,7 @@ def recieve_data(j):
     download(base_url)
     encoded_image = encode("base_image.png",data)
     encoded_image.save("encoded_image.png")
-    send_to_cloud("encoded_image.png")
+    return send_to_cloud("encoded_image.png")
 
 
 def download(durl):

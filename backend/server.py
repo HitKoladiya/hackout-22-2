@@ -12,9 +12,17 @@ def hello_world():
 @app.route("/image",methods = ["post","get"])
 def process():
     if request.method == 'POST':
-        data = request.get_json()
-        recieve_data(data)
-        return "200"
+        try:
+            data = request.get_json()
+            id = recieve_data(data)
+            return {
+                "status": "success",
+                "IpfsHash" : id
+            }
+        except :
+            return {
+                "status": "failed"
+            }
 
 
 if __name__ == "__main__":
