@@ -26,7 +26,7 @@ const EncFrm = () => {
             key: data.key,
         };
         console.log(finalData);
-        
+
         alert(JSON.stringify(finalData));
     };
 
@@ -34,7 +34,7 @@ const EncFrm = () => {
         e.preventDefault();
         const formData = new FormData(e.target);
         console.log(formData);
-        
+
         const Upload = async () => {
             await fetch("http://127.0.0.1:5000/image", {
                 method: "POST",
@@ -122,7 +122,7 @@ const EncFrm = () => {
                                         <div className="flex text-sm text-gray-600">
                                             <label
                                                 htmlFor="file-upload"
-                                                className="relative cursor-pointer rounded-md bg-white font-medium text-black focus-within:outline-none focus-within:ring-2 focus-within:ring-gray-700 focus-within:ring-offset-2 hover:text-gray-700"
+                                                className="relative cursor-pointer rounded-md  bg-white font-medium text-black focus-within:outline-none focus-within:ring-2 focus-within:ring-gray-700 focus-within:ring-offset-2 hover:text-gray-700"
                                             >
                                                 <span>{fnm}</span>
                                                 <input
@@ -130,8 +130,7 @@ const EncFrm = () => {
                                                     id="image"
                                                     name="file"
                                                     accept="image/*"
-                                                    className="file-custom"
-                                                    
+                                                    // className="sr-only"
                                                 />
                                             </label>
                                         </div>

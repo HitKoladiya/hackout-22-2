@@ -1,12 +1,47 @@
+import axios from "axios";
 import React, { useState } from "react";
 
 const EncFrm = () => {
     const [data, setData] = useState({
         data: "",
-        key: "",
+        image: "",
     });
 
-    const [file, setFile] = useState();
+    const [img, setImg] = useState(null);
+
+    const sendFileToIPFS = async (e: any) => {
+        if (img) {
+            try {
+
+                const formData = new FormData();
+                formData.append("file", img);
+
+                const resFile = await axios({
+                    method: "post",
+                    url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
+                    data: formData,
+                    headers: {
+                        'pinata_api_key': `f07278d2821266c978fe`,
+                        'pinata_secret_api_key': `350ac748c968d726208495d0ab1cf85264856db12cae91e23b4471c166b146a0`,
+                        "Content-Type": "multipart/form-data"
+                    },
+                });
+
+                const ImgHash = `ipfs://${resFile.data.IpfsHash}`;
+                console.log(ImgHash);
+                setData({ ...data, image: ImgHash });
+                console.log(data);
+
+                //Take a look at your Pinata Pinned section, you will see a new file added to you list.   
+
+
+
+            } catch (error) {
+                console.log("Error sending File to IPFS: ")
+                console.log(error)
+            }
+        }
+    }
 
     const [fnm, setFnm] = useState("Upload File");
 
@@ -20,20 +55,19 @@ const EncFrm = () => {
 
     const handleFile = async (e: any) => {
         let file = await e.target.files[0];
-        setFile(file);
+        await setImg(file);
         setFnm(file.name);
-        console.log(file);
+        console.log(img);
+        console.log(data);
+
     };
 
-    const handleSubmit = (event: { preventDefault: () => void }) => {
+    const handleSubmit = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
-        const finalData = {
-            data: data.data,
-            key: data.key,
-            file: file,
-        };
-        console.log(finalData);
-        alert(JSON.stringify(finalData));
+        await sendFileToIPFS(event);
+        console.log(data);
+
+
     };
 
     return (
@@ -60,23 +94,6 @@ const EncFrm = () => {
                                 required
                                 onChange={handleChange}
                                 placeholder="Enter data you want to decrypt"
-                                className="mb-3 relative block w-full appearance-none rounded-md rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                            />
-                        </div>
-                        <div>
-                            <label
-                                htmlFor="key"
-                                className="block text-sm font-medium text-gray-700 mb-2 ml-1"
-                            >
-                                Encryption Key
-                            </label>
-                            <input
-                                id="key"
-                                name="key"
-                                type="text"
-                                required
-                                onChange={handleChange}
-                                placeholder="Enter your encryption key"
                                 className="mb-3 relative block w-full appearance-none rounded-md rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                             />
                         </div>
