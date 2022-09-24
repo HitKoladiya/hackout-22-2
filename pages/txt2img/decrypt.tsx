@@ -6,7 +6,7 @@ import withReactContent from "sweetalert2-react-content";
 const EncFrm = () => {
     const MySwal = withReactContent(Swal);
 
-    const [img, setImg] = useState();
+    const [img, setImg] = useState("");
 
     const [url, setUrl] = useState("");
 
