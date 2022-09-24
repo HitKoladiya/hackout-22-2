@@ -59,4 +59,3 @@ j = {
     "data": "Jayu",
     "image": "ipfs://QmNc7vC1ZgCMffQkusrdQZTAwqAUhFSPSQzyK1aUbZBskf"
 }
-recieve_data(j)
