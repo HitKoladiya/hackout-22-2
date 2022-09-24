@@ -41,7 +41,7 @@ def download_decode(durl):
 
 def recieve_audio_data_encode(j):
     base_url = "https://gateway.pinata.cloud/ipfs/"
-    image_link = j['audio']
+    image_link = j['image']
     data = j["data"]
     l = image_link.split('://')[1]
     base_url += l
@@ -51,7 +51,7 @@ def recieve_audio_data_encode(j):
 
 def recieve_audio_data_decode(j):
     base_url = "https://gateway.pinata.cloud/ipfs/"
-    image_link = j['audio']
+    image_link = j['image']
     l = image_link.split('://')[1]
     base_url += l
     print(base_url)
