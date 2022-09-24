@@ -39,7 +39,7 @@ def download_decode(durl):
             if chunk:
                 f.write(chunk)
 
-def recieve_data_encode(j):
+def recieve_audio_data_encode(j):
     base_url = "https://gateway.pinata.cloud/ipfs/"
     image_link = j['audio']
     data = j["data"]
@@ -50,7 +50,7 @@ def recieve_data_encode(j):
     encode_audio(data)
     return send_audio_to_cloud("encoded_song.wav")
 
-def recieve_data_decode(j):
+def recieve_audio_data_decode(j):
     base_url = "https://gateway.pinata.cloud/ipfs/"
     image_link = j['audio']
     l = image_link.split('://')[1]
@@ -62,5 +62,3 @@ j = {
     "data" : "hello",
     "audio": "ipfs://bafybeihsuqdu4wfcunmo6p3diswwfpyf74furmp67o5coyfyadvbekhe7i"
 }
-
-print(recieve_data_decode(j))
