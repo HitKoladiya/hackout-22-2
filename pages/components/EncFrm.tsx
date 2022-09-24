@@ -1,7 +1,12 @@
 import axios from "axios";
 import React, { useState } from "react";
+import Swal from 'sweetalert2'
+import withReactContent from "sweetalert2-react-content";
 
 const EncFrm = () => {
+
+    const MySwal = withReactContent(Swal)
+
     const [data, setData] = useState({
         data: "",
         image: "",
@@ -55,6 +60,7 @@ const EncFrm = () => {
 
     const handleFile = async (e: any) => {
         let file = await e.target.files[0];
+
         await setImg(file);
         setFnm(file.name);
         console.log(img);
@@ -64,7 +70,41 @@ const EncFrm = () => {
 
     const handleSubmit = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
+        MySwal.fire({
+            title: 'Uploading File',
+            text: 'Please wait...',
+            allowOutsideClick: false,
+        });
         await sendFileToIPFS(event);
+
+        const options = {
+            method: 'POST',
+            url: 'http://127.0.0.1:5000/image_encode',
+            data: data,
+        };
+
+        axios.request(options).then(function (response) {
+            console.log(response.data);
+            MySwal.close();
+
+            MySwal.fire({
+                title: 'Message encrypted and uploaded to IPFS',
+                text: response.data,
+                icon: 'success',
+                confirmButtonText: 'Ok'
+            });
+        }).catch(function (error) {
+            console.error(error);
+            MySwal.close();
+            MySwal.fire({
+                title: 'Error',
+                text: error,
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+        });
+
+
         console.log(data);
 
 

@@ -2,7 +2,7 @@ import requests
 from Access_t import jwt
 import requests
 import  json
-from text_steganography import encode
+from text_steganography import encode,decode
 def send_to_cloud(img):
     auth_test()
     url = "https://api.pinata.cloud/pinning/pinFileToIPFS"
@@ -27,7 +27,7 @@ def auth_test():
     response = requests.request("GET", url, headers=headers, data=payload)
     print(response.text)
 
-def recieve_data(j):
+def recieve_data_encode(j):
     base_url = "https://gateway.pinata.cloud/ipfs/"
     image_link = j['image']
     data = j["data"]
@@ -39,6 +39,14 @@ def recieve_data(j):
     encoded_image.save("encoded_image.png")
     return send_to_cloud("encoded_image.png")
 
+def recieve_data_decode(j):
+    base_url = "https://gateway.pinata.cloud/ipfs/"
+    image_link = j['image']
+    l = image_link.split('://')[1]
+    base_url += l
+    print(base_url)
+    download(base_url)
+    return decode("base_image.png")
 
 def download(durl):
     req = requests.get(durl)
@@ -51,4 +59,3 @@ j = {
     "data": "Jayu",
     "image": "ipfs://QmNc7vC1ZgCMffQkusrdQZTAwqAUhFSPSQzyK1aUbZBskf"
 }
-recieve_data(j)
