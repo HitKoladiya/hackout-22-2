@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const EncFrm = () => {
     const [data, setData] = useState({
@@ -25,7 +26,7 @@ const EncFrm = () => {
         console.log(file);
     };
 
-    const handleSubmit = (event: { preventDefault: () => void }) => {
+    const handleSubmit = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
         const finalData = {
             data: data.data,
@@ -33,9 +34,26 @@ const EncFrm = () => {
             file: file,
         };
         console.log(finalData);
+        const options = {
+            method: "POST",
+            url: "http://127.0.0.1:5000/image",
+            data: finalData,
+        };
+
+        await axios
+            .request(options)
+            .then(function (response) {
+                console.log(response.data);
+            })
+            .catch(function (error) {
+                console.error(error);
+            });
         alert(JSON.stringify(finalData));
     };
 
+    //
+
+    //
     return (
         <div className="flex mb-10 pb-0 min-h-full items-center justify-center py-10 px-4 sm:px-6 lg:px-8 ">
             <div className="w-full max-w-md space-y-8">

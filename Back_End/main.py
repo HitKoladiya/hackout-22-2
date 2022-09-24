@@ -7,7 +7,7 @@ from image_Stegano import Encode,Decode
 
 app = Flask(__name__)
 
-CORS(app, supports_credentials=True)
+CORS(app)
 
 
 @app.route('/')
