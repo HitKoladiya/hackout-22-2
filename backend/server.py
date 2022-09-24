@@ -26,7 +26,7 @@ def process_decode():
 
         return {
             "status": "200",
-            "IpfsHash" : id
+            "decoded_text": id
         }
 
 if __name__ == "__main__":
