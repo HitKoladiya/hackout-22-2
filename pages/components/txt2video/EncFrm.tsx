@@ -118,7 +118,7 @@ const EncFrm = () => {
             <div className="w-full max-w-md space-y-8">
                 <div>
                     <h2 className=" text-center text-3xl font-bold tracking-tight text-gray-100">
-                        Encrypt Data
+                        Encrypt Data txt2video
                     </h2>
                 </div>
                 <form className="mt-8 space-y-6">

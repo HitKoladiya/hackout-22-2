@@ -1,11 +1,10 @@
 import axios from "axios";
 import React, { useState } from "react";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 const EncFrm = () => {
-
-    const MySwal = withReactContent(Swal)
+    const MySwal = withReactContent(Swal);
 
     const [data, setData] = useState({
         data: "",
@@ -17,7 +16,6 @@ const EncFrm = () => {
     const sendFileToIPFS = async (e: any) => {
         if (img) {
             try {
-
                 const formData = new FormData();
                 formData.append("file", img);
 
@@ -26,9 +24,9 @@ const EncFrm = () => {
                     url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
                     data: formData,
                     headers: {
-                        'pinata_api_key': `f07278d2821266c978fe`,
-                        'pinata_secret_api_key': `350ac748c968d726208495d0ab1cf85264856db12cae91e23b4471c166b146a0`,
-                        "Content-Type": "multipart/form-data"
+                        pinata_api_key: `f07278d2821266c978fe`,
+                        pinata_secret_api_key: `350ac748c968d726208495d0ab1cf85264856db12cae91e23b4471c166b146a0`,
+                        "Content-Type": "multipart/form-data",
                     },
                 });
 
@@ -37,16 +35,13 @@ const EncFrm = () => {
                 setData({ ...data, image: ImgHash });
                 console.log(data);
 
-                //Take a look at your Pinata Pinned section, you will see a new file added to you list.   
-
-
-
+                //Take a look at your Pinata Pinned section, you will see a new file added to you list.
             } catch (error) {
-                console.log("Error sending File to IPFS: ")
-                console.log(error)
+                console.log("Error sending File to IPFS: ");
+                console.log(error);
             }
         }
-    }
+    };
 
     const [fnm, setFnm] = useState("Upload File");
 
@@ -65,7 +60,6 @@ const EncFrm = () => {
         setFnm(file.name);
         console.log(img);
         console.log(data);
-
     };
 
     const handleSubmit = async (event: { preventDefault: () => void }) => {
@@ -81,36 +75,36 @@ const EncFrm = () => {
         await sendFileToIPFS(event);
 
         const options = {
-            method: 'POST',
-            url: 'http://127.0.0.1:5000/image_encode',
+            method: "POST",
+            url: "http://127.0.0.1:5000/image_encode",
             data: data,
         };
 
-        axios.request(options).then(function (response) {
-            console.log(response.data);
-            MySwal.close();
+        axios
+            .request(options)
+            .then(function (response) {
+                console.log(response.data);
+                MySwal.close();
 
-            MySwal.fire({
-                title: 'Message encrypted and uploaded to IPFS',
-                text: response.data,
-                icon: 'success',
-                confirmButtonText: 'Ok'
+                MySwal.fire({
+                    title: "Message encrypted and uploaded to IPFS",
+                    icon: "success",
+                    confirmButtonText: "Ok",
+                });
+                console.log("Jay");
+            })
+            .catch(function (error) {
+                console.error(error);
+                MySwal.close();
+                MySwal.fire({
+                    title: "Error",
+                    text: error,
+                    icon: "error",
+                    confirmButtonText: "Ok",
+                });
             });
-        }).catch(function (error) {
-            console.error(error);
-            MySwal.close();
-            MySwal.fire({
-                title: 'Error',
-                text: error,
-                icon: 'error',
-                confirmButtonText: 'Ok'
-            });
-        });
-
 
         console.log(data);
-
-
     };
 
     return (
@@ -118,7 +112,7 @@ const EncFrm = () => {
             <div className="w-full max-w-md space-y-8">
                 <div>
                     <h2 className=" text-center text-3xl font-bold tracking-tight text-gray-100">
-                        Encrypt Data
+                        Encrypt Data img2img
                     </h2>
                 </div>
                 <form className="mt-8 space-y-6">
