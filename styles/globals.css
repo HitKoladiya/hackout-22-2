@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-    /* background-color: #000; */
+    background-color: #000;
 }
 
 ::-webkit-scrollbar {
@@ -24,4 +24,9 @@ body {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: #6b7276;
+}
+
+.file-custom{
+    position: absolute;
+    
 }
