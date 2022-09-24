@@ -2,12 +2,9 @@ import axios from "axios";
 import React, { useState } from "react";
 
 const EncFrm = () => {
-    const [data, setData] = useState({
-        data: "",
-        image: "",
-    });
 
-    const [img, setImg] = useState(null);
+
+    const [img, setImg] = useState("");
 
     const sendFileToIPFS = async (e: any) => {
         if (img) {
@@ -29,8 +26,7 @@ const EncFrm = () => {
 
                 const ImgHash = `ipfs://${resFile.data.IpfsHash}`;
                 console.log(ImgHash);
-                setData({ ...data, image: ImgHash });
-                console.log(data);
+                setImg(ImgHash);
 
                 //Take a look at your Pinata Pinned section, you will see a new file added to you list.   
 
@@ -45,27 +41,19 @@ const EncFrm = () => {
 
     const [fnm, setFnm] = useState("Upload File");
 
-    const handleChange = (e: any) => {
-        setData({
-            ...data,
-            [e.target.name]: e.target.value,
-        });
-        console.log(data);
-    };
 
     const handleFile = async (e: any) => {
         let file = await e.target.files[0];
         await setImg(file);
         setFnm(file.name);
         console.log(img);
-        console.log(data);
 
     };
 
     const handleSubmit = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
         await sendFileToIPFS(event);
-        console.log(data);
+        console.log(img);
 
 
     };
@@ -80,23 +68,7 @@ const EncFrm = () => {
                 </div>
                 <form className="mt-8 space-y-6">
                     <div className=" rounded-md shadow- bg-white shadow-gray-800 p-5">
-                        <div>
-                            <label
-                                htmlFor="name"
-                                className="block text-sm font-medium text-gray-700 mb-2 ml-1"
-                            >
-                                Encrypted Data
-                            </label>
-                            <textarea
-                                id="data"
-                                name="data"
-                                rows={5}
-                                required
-                                onChange={handleChange}
-                                placeholder="Enter data you want to decrypt"
-                                className="mb-3 relative block w-full appearance-none rounded-md rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                            />
-                        </div>
+
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">
