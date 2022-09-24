@@ -9,5 +9,3 @@ def encode(img, data):
 def decode(img):
     encrypted_text = lsb.reveal(img)
     return encrypted_text
-
-
