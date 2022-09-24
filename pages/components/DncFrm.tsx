@@ -1,7 +1,11 @@
 import axios from "axios";
 import React, { useState } from "react";
+import Swal from 'sweetalert2'
+import withReactContent from "sweetalert2-react-content";
 
 const EncFrm = () => {
+
+    const MySwal = withReactContent(Swal)
 
 
     const [img, setImg] = useState("");
@@ -52,6 +56,15 @@ const EncFrm = () => {
 
     const handleSubmit = async (event: { preventDefault: () => void }) => {
         event.preventDefault();
+        MySwal.fire({
+            title: "Decrypting...",
+            text: "Please wait...",
+            allowOutsideClick: false,
+            didOpen: () => {
+                MySwal.showLoading();
+            },
+        });
+
         await sendFileToIPFS(event);
         console.log(img);
 
