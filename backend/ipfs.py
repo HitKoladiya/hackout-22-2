@@ -33,7 +33,7 @@ def recieve_data_encode(j):
     l = image_link.split('://')[1]
     base_url += l
     print(base_url)
-    download(base_url)
+    download_encode(base_url)
     encoded_image = encode("base_image.png",data)
     encoded_image.save("encoded_image.png")
     return send_to_cloud("encoded_image.png")
@@ -44,17 +44,23 @@ def recieve_data_decode(j):
     l = image_link.split('://')[1]
     base_url += l
     print(base_url)
-    download(base_url)
+    download_decode(base_url)
     return decode("base_image.png")
 
-def download(durl):
+def download_encode(durl):
     req = requests.get(durl)
     with open("base_image.png", 'wb') as f:
+        for chunk in req.iter_content(chunk_size=8192):
+            if chunk:
+                f.write(chunk)
+def download_decode(durl):
+    req = requests.get(durl)
+    with open("encoded_image.png", 'wb') as f:
         for chunk in req.iter_content(chunk_size=8192):
             if chunk:
                 f.write(chunk)
 
 j = {
     "data": "Jayu",
-    "image": "ipfs://QmNc7vC1ZgCMffQkusrdQZTAwqAUhFSPSQzyK1aUbZBskf"
+    "image": "ipfs://bafkreidu5tlgns6y5ficn7be7smaxczcx4jrbk3mkpzner53xivdvsw74m"
 }
