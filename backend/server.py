@@ -1,7 +1,6 @@
 from flask import  Flask,request,send_file
-from PIL import Image
 from flask_cors import CORS
-from text_steganography import  encode,decode
+from ipfs import recieve_data
 
 app = Flask(__name__)
 CORS(app)
@@ -13,14 +12,8 @@ def hello_world():
 @app.route("/image",methods = ["post","get"])
 def process():
     if request.method == 'POST':
-        # check if the post
-        # request has the file part
-        print(request)
-        f = request.files.get('file')
-        img = Image.open(f)
-        print(img)
-        img.save("hello.png")
-        encode(img,"fuck off")
+        data = request.get_json()
+        recieve_data(data)
         return "200"
 
 
