@@ -21,7 +21,7 @@ def process():
         print(img)
         img.save("hello.png")
         encode(img,"fuck off")
-        return send_file("./hello.png")
+        return "200"
 
 
 if __name__ == "__main__":
