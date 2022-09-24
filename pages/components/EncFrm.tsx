@@ -1,13 +1,47 @@
-import React, { useState } from "react";
 import axios from "axios";
+import React, { useState } from "react";
 
 const EncFrm = () => {
     const [data, setData] = useState({
         data: "",
-        key: "",
+        image: "",
     });
 
-    const [file, setFile] = useState();
+    const [img, setImg] = useState(null);
+
+    const sendFileToIPFS = async (e: any) => {
+        if (img) {
+            try {
+
+                const formData = new FormData();
+                formData.append("file", img);
+
+                const resFile = await axios({
+                    method: "post",
+                    url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
+                    data: formData,
+                    headers: {
+                        'pinata_api_key': `f07278d2821266c978fe`,
+                        'pinata_secret_api_key': `350ac748c968d726208495d0ab1cf85264856db12cae91e23b4471c166b146a0`,
+                        "Content-Type": "multipart/form-data"
+                    },
+                });
+
+                const ImgHash = `ipfs://${resFile.data.IpfsHash}`;
+                console.log(ImgHash);
+                setData({ ...data, image: ImgHash });
+                console.log(data);
+
+                //Take a look at your Pinata Pinned section, you will see a new file added to you list.   
+
+
+
+            } catch (error) {
+                console.log("Error sending File to IPFS: ")
+                console.log(error)
+            }
+        }
+    }
 
     const [fnm, setFnm] = useState("Upload File");
 
@@ -19,56 +53,39 @@ const EncFrm = () => {
         console.log(data);
     };
 
-    const handleSubmit = async (event: { preventDefault: () => void }) => {
-        event.preventDefault();
-        const finalData = {
-            data: data.data,
-            key: data.key,
-        };
-        console.log(finalData);
+    const handleFile = async (e: any) => {
+        let file = await e.target.files[0];
+        await setImg(file);
+        setFnm(file.name);
+        console.log(img);
+        console.log(data);
 
-        alert(JSON.stringify(finalData));
     };
 
-    const handleFile = (e: any) => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-        console.log(formData);
+    const handleSubmit = async (event: { preventDefault: () => void }) => {
+        event.preventDefault();
+        await sendFileToIPFS(event);
+        console.log(data);
 
-        const Upload = async () => {
-            await fetch("http://127.0.0.1:5000/image", {
-                method: "POST",
-                body: formData,
-            }).then((resp) => {
-                resp.json().then((data) => {
-                    console.log(data);
-                });
-            });
-        };
-        console.log(formData);
 
-        Upload();
-    }
+    };
 
-    //
-
-    //
     return (
         <div className="flex mb-10 pb-0 min-h-full items-center justify-center py-10 px-4 sm:px-6 lg:px-8 ">
             <div className="w-full max-w-md space-y-8">
                 <div>
                     <h2 className=" text-center text-3xl font-bold tracking-tight text-gray-100">
-                        Encrypt Data
+                        Decrypt Data
                     </h2>
                 </div>
-                <div className="mt-8 space-y-6">
+                <form className="mt-8 space-y-6">
                     <div className=" rounded-md shadow- bg-white shadow-gray-800 p-5">
                         <div>
                             <label
                                 htmlFor="name"
                                 className="block text-sm font-medium text-gray-700 mb-2 ml-1"
                             >
-                                Data
+                                Encrypted Data
                             </label>
                             <textarea
                                 id="data"
@@ -76,31 +93,14 @@ const EncFrm = () => {
                                 rows={5}
                                 required
                                 onChange={handleChange}
-                                placeholder="Enter data you want to encrypt"
-                                className="mb-3 relative block w-full appearance-none rounded-md rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                            />
-                        </div>
-                        <div>
-                            <label
-                                htmlFor="key"
-                                className="block text-sm font-medium text-gray-700 mb-2 ml-1"
-                            >
-                                Encryption Key
-                            </label>
-                            <input
-                                id="key"
-                                name="key"
-                                type="text"
-                                required
-                                onChange={handleChange}
-                                placeholder="Enter your encryption key"
+                                placeholder="Enter data you want to decrypt"
                                 className="mb-3 relative block w-full appearance-none rounded-md rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                             />
                         </div>
 
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">
-                                Encryption image
+                                Encrypted image
                             </label>
                             <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
                                 <div className="space-y-1 text-center">
@@ -118,26 +118,21 @@ const EncFrm = () => {
                                             strokeLinejoin="round"
                                         />
                                     </svg>
-                                    <form onSubmit={handleFile} encType="multipart/form-data">
-                                        <div className="flex text-sm text-gray-600">
-                                            <label
-                                                htmlFor="file-upload"
-                                                className="relative cursor-pointer rounded-md  bg-white font-medium text-black focus-within:outline-none focus-within:ring-2 focus-within:ring-gray-700 focus-within:ring-offset-2 hover:text-gray-700"
-                                            >
-                                                <span>{fnm}</span>
-                                                <input
-                                                    type="file"
-                                                    id="image"
-                                                    name="file"
-                                                    accept="image/*"
-                                                    // className="sr-only"
-                                                />
-                                            </label>
-                                        </div>
-                                        <button type="submit">
-                                            upload
-                                        </button>
-                                    </form>
+                                    <div className="flex text-sm text-gray-600">
+                                        <label
+                                            htmlFor="file-upload"
+                                            className="relative cursor-pointer rounded-md bg-white font-medium text-black focus-within:outline-none focus-within:ring-2 focus-within:ring-gray-700 focus-within:ring-offset-2 hover:text-gray-700"
+                                        >
+                                            <span>{fnm}</span>
+                                            <input
+                                                id="file-upload"
+                                                name="file-upload"
+                                                type="file"
+                                                onChange={handleFile}
+                                                className="sr-only"
+                                            />
+                                        </label>
+                                    </div>
                                     <p className="text-xs text-gray-500">
                                         PNG & JPG
                                     </p>
@@ -155,7 +150,7 @@ const EncFrm = () => {
                             </button>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     );
