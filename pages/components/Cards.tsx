@@ -23,7 +23,7 @@ const Cards = () => {
     return (
         <>
             <div className="flex py-20 justify-center items-center">
-                <div className="flex w-10/12">
+                <div className="flex w-10/12 justify-center items-center">
                     {btns.map((item) => (
                         <div className="group m-4 w-1/4 bg-gray-100 rounded-lg p-5 shadow-inner cursor-pointer">
                             <div className="p-14 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-100 xl:aspect-w-7 xl:aspect-h-8">
