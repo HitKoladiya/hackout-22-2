@@ -50,7 +50,7 @@ const Cards = () => {
                             </Link>
                             <Link href={`${item.link}/decrypt`}>
                                 <button className="mt-10 group relative flex w-full justify-center rounded-md border shadow-md shadow-gray-300 border-transparent bg-black py-2 px-4 text-sm font-medium text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
-                                    Descode
+                                    Decode
                                 </button>
                             </Link>
                         </div>

@@ -30,7 +30,7 @@ const EncFrm = () => {
                 const ImgHash = await `ipfs://${resFile.data.IpfsHash}`;
                 setUrl(ImgHash);
                 console.log(ImgHash);
-                await setImg(ImgHash);
+                setImg(ImgHash);
 
                 //Take a look at your Pinata Pinned section, you will see a new file added to you list.
             } catch (error) {
@@ -105,14 +105,14 @@ const EncFrm = () => {
             <div className="w-full max-w-md space-y-8">
                 <div>
                     <h2 className=" text-center text-3xl font-bold tracking-tight text-gray-100">
-                        Decrypt Data txt2img
+                        Decrypt Data pdf2img
                     </h2>
                 </div>
                 <form className="mt-8 space-y-6">
                     <div className=" rounded-md shadow- bg-white shadow-gray-800 p-5">
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-2 ml-1">
-                                Encrypted image
+                                Encrypted Image
                             </label>
                             <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
                                 <div className="space-y-1 text-center">

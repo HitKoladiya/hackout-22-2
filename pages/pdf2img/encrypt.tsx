@@ -119,7 +119,7 @@ const EncFrm = () => {
             <div className="w-full max-w-md space-y-8">
                 <div>
                     <h2 className=" text-center text-3xl font-bold tracking-tight text-gray-100">
-                        Encrypt Data txt2img
+                        Encrypt Data pdf2img
                     </h2>
                 </div>
                 <form className="mt-8 space-y-6">
@@ -202,7 +202,7 @@ const EncFrm = () => {
                                         </label>
                                     </div>
                                     <p className="text-xs text-gray-500">
-                                        PNG & JPG
+                                        Choose a pdf
                                     </p>
                                 </div>
                             </div>
